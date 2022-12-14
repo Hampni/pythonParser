@@ -5,7 +5,7 @@ rd = redis.Redis(host='localhost',
                  port=6379)
 
 
-for i in range(3881):
+for i in range(4781):
 	rd.lpop('letter_links')
 
 print('letter links: ')

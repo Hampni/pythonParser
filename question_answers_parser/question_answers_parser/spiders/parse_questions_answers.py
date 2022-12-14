@@ -2,6 +2,7 @@ from ..items import HeaderItem
 import scrapy
 import redis
 from scrapy.spiders import CrawlSpider
+from scrapy import Request
 
 
 rd = redis.Redis(host='localhost',
@@ -11,19 +12,17 @@ rd = redis.Redis(host='localhost',
 class ParseQuestionsAnswersSpider(CrawlSpider):
     name = 'parse_questions_answers'
     allowed_domains = ['kreuzwort-raetsel.net']
-    start_urls = ['https://kreuzwort-raetsel.net/']
 
     def start_requests(self):
-        yield scrapy.Request(url=(rd.lpop('letter_links')).decode('utf-8'), callback=self.parse_link)
+        request = Request((rd.lpop('letter_links')).decode('utf-8'),callback=self.parse)
+        yield request
+    
+    def parse(self, response):
 
-    def parse_link(self, response):
-
-        # def start_requests(self):
-        # for i in range(10):
-
-        #     yield scrapy.Request(url=(rd.lpop('letter_links')).decode('utf-8'), callback=self.parse_letter_link)
-
-        # def parse_letter_link(self, response):
+        if rd.llen('letter_links') % 10 ==0:
+            print('++++++++++++++++++++++++++++++++++++++')
+            print(rd.llen('letter_links'))
+            print('++++++++++++++++++++++++++++++++++++++')
 
         if response == None:
             rd.rpush('bad_links', response.url)

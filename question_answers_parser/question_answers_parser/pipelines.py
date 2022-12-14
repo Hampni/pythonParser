@@ -8,12 +8,6 @@
 from itemadapter import ItemAdapter
 import mysql.connector
 
-
-# class QuestionAnswersParserPipeline:
-#     def process_item(self, item, spider):
-#         return item
-
-
 class QuestionAnswersParserPipeline():
     def process_item(self, item, spider):
         if spider.name in ['parse_questions_answers']:
