@@ -14,8 +14,7 @@ class ParseQuestionsAnswersSpider(CrawlSpider):
     start_urls = ['https://kreuzwort-raetsel.net/']
 
     def start_requests(self):
-        for i in range(3):
-            yield scrapy.Request(url=(rd.lpop('letter_links')).decode('utf-8'), callback=self.parse_link)
+        yield scrapy.Request(url=(rd.lpop('letter_links')).decode('utf-8'), callback=self.parse_link)
 
     def parse_link(self, response):
 
